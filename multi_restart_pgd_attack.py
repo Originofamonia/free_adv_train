@@ -65,6 +65,7 @@ class LinfPGDAttack:
 
         return x
 
+
 def get_path_dir(data_dir, dataset, **_):
     path = os.path.join(data_dir, dataset)
     if os.path.islink(path):
@@ -94,11 +95,10 @@ if __name__ == '__main__':
                            config.loss_func)
     saver = tf.train.Saver()
 
-
-    if dataset == 'cifar10': 
-      cifar = cifar10_input.CIFAR10Data(data_path)
+    if dataset == 'cifar10':
+        cifar = cifar10_input.CIFAR10Data(data_path)
     else:
-      cifar = cifar100_input.CIFAR100Data(data_path)
+        cifar = cifar100_input.CIFAR100Data(data_path)
 
     with tf.Session() as sess:
         # Restore the checkpoint

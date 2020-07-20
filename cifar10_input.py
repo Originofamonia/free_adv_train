@@ -12,7 +12,7 @@ import os
 import pickle
 import sys
 import tensorflow as tf
-from tensorflow.examples.tutorials.mnist import input_data
+# from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 import re
 
@@ -103,11 +103,11 @@ class AugmentedCIFAR10Data(object):
         self.image_size = 32
 
         # create augmentation computational graph
-        self.x_input_placeholder = tf.placeholder(tf.float32, shape=[None, 32, 32, 3])
-        padded = tf.map_fn(lambda img: tf.image.resize_image_with_crop_or_pad(
+        self.x_input_placeholder = tf.compat.v1.placeholder(tf.float32, shape=[None, 32, 32, 3])
+        padded = tf.map_fn(lambda img: tf.image.resize_with_crop_or_pad(
             img, self.image_size + 4, self.image_size + 4),
                            self.x_input_placeholder)
-        cropped = tf.map_fn(lambda img: tf.random_crop(img, [self.image_size,
+        cropped = tf.map_fn(lambda img: tf.image.random_crop(img, [self.image_size,
                                                              self.image_size,
                                                              3]), padded)
         flipped = tf.map_fn(lambda img: tf.image.random_flip_left_right(img), cropped)
@@ -167,4 +167,4 @@ class AugmentedDataSubset(object):
                                                        reshuffle_after_pass)
         images = raw_batch[0].astype(np.float32)
         return self.sess.run(self.augmented, feed_dict={self.x_input_placeholder:
-                                                            raw_batch[0]}), raw_batch[1]
+                                                        raw_batch[0]}), raw_batch[1]
